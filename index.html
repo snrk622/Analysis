@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>分析</title>
+        <link rel="stylesheet" href="./css/styles.css">
+        <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <!-- Don't use this in production: -->
+        <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    </head>
+    <body>
+        <div id="wrapper"></div>
+
+
+        <script type="text/babel">
+            
+            (() => {
+
+// Standard　ここから
+
+                function Standard(props) {
+                    return (
+                        <p>標準偏差: {props.std}</p>
+                    );
+                }
+
+// Standard　ここまで
+
+// Dispersion　ここから
+
+                function Dispersion(props) {
+                    return (
+                        <p>分散: {props.disp}</p>
+                    );
+                }
+
+// Dispersion　ここまで
+
+// Average　ここから
+
+                function Average(props) {
+                    return (
+                        <p>平均値: {props.ave}</p>
+                    );
+                }
+
+// Average　ここまで
+
+// Sum　ここから
+
+                function Sum(props) {
+                    return (
+                        <p>合計値: {props.sum}</p>
+                    );
+                }
+
+// Sum　ここまで
+
+// DataList　ここから
+
+                function DataItem(props) {
+                    return (
+                        <li>{props.data.data}</li>
+                    );
+                }
+
+                function DataList(props) {
+                    const datas = props.datas.map(data => {
+                        const key = props.datas.map(data => {
+                            return data.id;
+                        }).indexOf(data.id);
+                        return (
+                            <DataItem
+                                key={key}
+                                data={data}
+                            />
+                        );
+                    });
+                    return (    
+                        <ul>
+                            {datas}
+                        </ul>
+                    );
+                }
+
+// DataList　ここまで
+
+// Header ここから
+
+                function Form(props) {
+                    return (
+                        <form onSubmit={props.addData}>
+                            <input type="number" value={props.input} onChange={props.inputUpdate}/>
+                            <input type="submit"/>
+                        </form>
+                    );
+                }
+
+                function Header(props) {
+                    return (
+                        <header>
+                            <h1>AnalystApp</h1>
+                            <Form
+                                input={props.input}
+                                addData={props.addData}
+                                inputUpdate={props.inputUpdate}
+                            />
+                        </header>
+                    );
+                }
+
+// Header ここから
+
+                class App extends React.Component {
+                    constructor() {
+                        super();
+                        this.state = {
+                            datas: [],
+                            input: 0,
+                            sum: 0,
+                            ave: 0,
+                            disp: 0,
+                            std: 0
+                        };
+                        this.addData = this.addData.bind(this);
+                        this.inputUpdate = this.inputUpdate.bind(this);
+                    }
+
+                    addData(e) {
+                        e.preventDefault();
+                        if(this.state.input.length === 0) {
+                            return;
+                        }
+                        const id = new Date().getTime().toString(36);
+                        const data = parseFloat(this.state.input);
+                        const datas = this.state.datas.slice();
+                        datas.push({id: id, data: data});
+                        let sum = this.state.sum;
+                        sum += data;
+                        const ave = sum / datas.length;
+                        let dispSum = 0;
+                        datas.forEach(data => {
+                            dispSum += ((data.data - ave) ** 2);
+                        });
+                        const disp = dispSum / datas.length;
+                        const std = Math.sqrt(disp);
+                        this.setState({
+                            datas: datas,
+                            input: '',
+                            sum: sum,
+                            ave: ave,
+                            disp: disp,
+                            std: std
+                        });
+                    }
+
+                    inputUpdate(e) {
+                        this.setState({
+                            input: e.target.value
+                        });
+                    }
+
+                    render(){
+                        return (
+                            <div>
+                                <Header
+                                    input={this.state.input}
+                                    addData={this.addData}
+                                    inputUpdate={this.inputUpdate}
+                                />
+                                <DataList
+                                    datas={this.state.datas}
+                                />
+                                <Sum
+                                    sum={this.state.sum}
+                                />
+                                <Average
+                                    ave={this.state.ave}
+                                />
+                                <Dispersion
+                                    disp={this.state.disp}
+                                />
+                                <Standard
+                                    std={this.state.std}
+                                />
+                            </div>
+                        );
+                    }
+                }
+
+                ReactDOM.render (
+                    <App/>,
+                    document.getElementById('wrapper')
+                );
+            })();
+
+        </script>
+    </body>
+</html>

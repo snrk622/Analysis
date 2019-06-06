@@ -1,0 +1,37 @@
+html body {
+  margin: 0;
+  padding: 0; }
+  html body #wrapper header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 100px;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    background-color: aqua; }
+    html body #wrapper header h1 {
+      display: inline-block;
+      width: 80%;
+      text-align: center; }
+    html body #wrapper header form {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      width: 20%; }
+      html body #wrapper header form input[type="number"] {
+        width: 50%;
+        margin: 0 10%; }
+      html body #wrapper header form input[type="submit"] {
+        width: 20%; }
+  html body #wrapper ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+    html body #wrapper ul li {
+      display: inline-block;
+      margin: 0.25em;
+      padding: 0.2em 1em;
+      border-radius: 5px;
+      border: 1px solid black;
+      list-style: none; }
